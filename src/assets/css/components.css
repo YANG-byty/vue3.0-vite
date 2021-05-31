@@ -1,0 +1,50 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+ul li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+input,
+button {
+    outline: none;
+    border: 0;
+}
+
+em,
+i {
+    font-style: normal;
+}
+
+html,
+body {
+    font-size: 10px !important;
+}
+
+@media screen and (min-width: 375px) {
+    html,
+    body {
+        font-size: 10px !important;
+    }
+}
+
+@media screen and(min-width:414px) {
+    html,
+    body {
+        font-size: 11.4px !important;
+    }
+}
+
+@media screen and(min-width:768px) {
+    html,
+    body {
+        font-size: 20.48px !important;
+    }
+}
