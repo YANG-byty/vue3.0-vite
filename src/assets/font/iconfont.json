@@ -1,0 +1,16 @@
+{
+  "id": "2595919",
+  "name": "rcemsVue",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "10866808",
+      "name": "筛选",
+      "font_class": "shaixuan1",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    }
+  ]
+}

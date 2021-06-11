@@ -1,8 +1,8 @@
 // npm install --save mitt
 
-import mitt from 'mitt';
+import mitt from 'mitt'
 
 // 使用 Event Bus
-const bus = mitt();
+const bus = mitt()
 
-export default bus;
+export default bus

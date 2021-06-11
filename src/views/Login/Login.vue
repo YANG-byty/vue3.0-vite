@@ -2,11 +2,11 @@
   <div class="login-wrap">
     <div class="box-wrap">
       <div class="box">
-        <img src="/@/assets/images/logo2.png" alt="" />
+        <img src="@/assets/images/logo2.png" alt="" />
       </div>
       <div class="main-wrap">
         <div class="loginBg2-img">
-          <img src="/@/assets/images/loginBg2.png" alt="" />
+          <img src="@/assets/images/loginBg2.png" alt="" />
         </div>
         <div class="ms-login">
           <div class="ms-title">账号登录</div>
@@ -18,13 +18,18 @@
             class="ms-content"
           >
             <el-form-item prop="username">
-              <el-input v-model="param.username" placeholder="username">
+              <el-input
+                clearable
+                v-model="param.username"
+                placeholder="username"
+              >
                 <el-button icon="el-icon-lx-people"></el-button>
               </el-input>
             </el-form-item>
             <el-form-item prop="password">
               <el-input
-                type="password"
+                clearable
+                show-password
                 placeholder="password"
                 v-model="param.password"
                 @keyup.enter.native="submitForm()"
@@ -49,10 +54,11 @@
 </template>
 
 <script>
-// import request from "/@/utils/request.js";
+import systemInfo from "@/api/system.js";
 import md5 from "js-md5";
-// import { mapMutations } from "vuex";
+import { ElMessage } from "element-plus";
 export default {
+  name: "login",
   data: function () {
     return {
       param: {
@@ -68,32 +74,30 @@ export default {
     };
   },
   methods: {
-    CalcuMD5(pwd) {
-      pwd = pwd.toUpperCase();
-      pwd = md5(pwd);
-      return pwd;
-    },
     submitForm() {
       this.$refs.login.validate((valid) => {
         var that = this;
         if (valid) {
           var obj = {
-            userCode: this.param.username,
-            userPassword: this.CalcuMD5(this.param.password),
+            userName: this.param.username,
+            password: md5(this.param.password).toUpperCase(),
           };
-          // Login(obj).then((res) => {
-          //   console.log(res);
-          //   if (res.code == 200) {
-          //     this.$message.success(res.msg);
-          sessionStorage.setItem("userInfo", JSON.stringify("123456"));
-          this.$router.push("/");
-          //   } else {
-          //     this.$message.error(res.msg);
-          //   }
-          // });
+          systemInfo.login(obj).then((res) => {
+            if (res.success) {
+              systemInfo.getPermission().then((res2) => {
+                if (res.success) {
+                  sessionStorage.setItem("userInfo", JSON.stringify(res2.data));
+                  this.$router.push("/");
+                } else {
+                  ElMessage.success(res2.message);
+                }
+              });
+            } else {
+              ElMessage.error(res.message);
+            }
+          });
         } else {
-          this.$message.error("请输入账号和密码");
-          // console.log('error submit!!');
+          ElMessage.error("请输入账号和密码");
           return false;
         }
       });
@@ -121,6 +125,7 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-top: -6%;
   .main-wrap {
     display: flex;
     border-radius: 1rem;
@@ -139,7 +144,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: url("/@/assets/images/login_bg.png");
+  background-image: url("../../assets/images/login_bg.png");
   background-size: 100%;
   background-color: #fff;
   background-repeat: round;

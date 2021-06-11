@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import bus from "/@/utils/bus.js";
+import bus from "@/utils/bus.js";
 
 export default {
   data() {
@@ -74,11 +74,10 @@ export default {
         return item.path === route.fullPath;
       });
       if (!isExist) {
-        if (this.tagsList.length >= 8) {
-          this.tagsList.shift();
-        }
-        console.log(route);
-        this.tagsList.push({
+        // if (this.tagsList.length >= 10) {
+        //   this.tagsList.shift();
+        // }
+        this.tagsList.unshift({
           title: route.meta.title,
           path: route.fullPath,
           name: route.matched[0].components.default.name,
@@ -101,7 +100,6 @@ export default {
     },
   },
   created() {
-    console.log(this.$route);
     this.setTags(this.$route);
     // 监听关闭当前页面的标签页
     bus.on("close_current_tags", () => {
@@ -127,12 +125,12 @@ export default {
 <style>
 .tags {
   position: relative;
-  height: 30px;
+  height: 35px;
   overflow: hidden;
   background: #fff;
   padding-right: 120px;
   box-shadow: 0 5px 10px #ddd;
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
 
 .tags ul {
@@ -143,13 +141,13 @@ export default {
 
 .tags-li {
   float: left;
-  margin: 3px 5px 2px 3px;
+  margin: 3px 2px;
   border-radius: 3px;
   font-size: 12px;
   overflow: hidden;
   cursor: pointer;
-  height: 23px;
-  line-height: 23px;
+  height: 27px;
+  line-height: 27px;
   border: 1px solid #e9eaec;
   background: #fff;
   padding: 0 5px 0 12px;

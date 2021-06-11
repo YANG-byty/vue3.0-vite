@@ -5,11 +5,13 @@
       <i v-if="!collapse" class="el-icon-s-fold"></i>
       <i v-else class="el-icon-s-unfold"></i>
     </div>
-    <div class="logo">后台管理系统</div>
+    <div class="logo">
+      {{ title }}
+    </div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 全屏显示 -->
-        <div class="btn-fullscreen" @click="handleFullScreen">
+        <!-- <div class="btn-fullscreen" @click="handleFullScreen">
           <el-tooltip
             effect="dark"
             :content="fullscreen ? `取消全屏` : `全屏`"
@@ -17,21 +19,21 @@
           >
             <i class="el-icon-rank"></i>
           </el-tooltip>
-        </div>
+        </div> -->
         <!-- 用户头像 -->
         <div class="user-avator">
-          <img src="/@/assets/images/logo.png" />
+          <img src="@/assets/images/user.png" />
         </div>
         <!-- 用户名下拉菜单 -->
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
-            {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
+            admin<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item divided command="loginout"
-                >退出登录</el-dropdown-item
-              >
+                >退出登录
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -40,19 +42,20 @@
   </div>
 </template>
 <script>
-import bus from "/@/utils/bus.js";
+import bus from "@/utils/bus.js";
+import setToken from "@/settings.js";
 export default {
   data() {
     return {
       collapse: false,
       fullscreen: false,
-      name: "yang",
-      message: 2,
+      name: "",
+      title: setToken.title,
     };
   },
   computed: {
     username() {
-      let username = JSON.parse(sessionStorage.getItem("userInfo")).userName;
+      let username = JSON.parse(sessionStorage.getItem("userInfo")).account;
       return username ? username : this.name;
     },
   },
@@ -60,7 +63,7 @@ export default {
     // 用户名下拉菜单选择事件
     handleCommand(command) {
       if (command == "loginout") {
-        sessionStorage.removeItem("userInfo");
+        sessionStorage.removeItem(setToken.token);
         this.$router.push("/login");
       }
     },
@@ -169,7 +172,7 @@ export default {
   margin-left: 10px;
 }
 .user-avator {
-  margin-left: 20px;
+  margin: 0 20px;
 }
 .user-avator img {
   display: block;

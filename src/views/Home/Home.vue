@@ -7,22 +7,22 @@
       </div>
       <div class="content">
         <v-tags></v-tags>
-        <transition name="move" mode="out-in">
-          <keep-alive :include="tagsList">
-            <router-view></router-view>
+        <router-view v-slot="{ Component }">
+          <keep-alive>
+            <component :is="Component" />
           </keep-alive>
-        </transition>
-        <el-backtop target=".content"></el-backtop>
+        </router-view>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import bus from "/@/utils/bus.js";
+import bus from "@/utils/bus.js";
 import vHead from "./components/Header.vue";
 import vSidebar from "./components/Sidebar.vue";
 import vTags from "./components/Tags.vue";
+
 export default {
   components: {
     vHead,
@@ -36,15 +36,14 @@ export default {
   },
   methods: {},
   created() {
-    // this.$store.dispatch("getSchoolBox");
-    // this.$store.dispatch("getClassListBox");
+    this.$store.dispatch("actGetBuildMenu");
+
     bus.on("collapse-content", (msg) => {
       this.collapse = msg;
     });
 
     // 只有在标签页列表里的页面才使用keep-alive，即关闭标签之后就不保存到内存中了。
     bus.on("tags", (msg) => {
-      console.log(msg);
       let arr = [];
       for (let i = 0, len = msg.length; i < len; i++) {
         msg[i].name && arr.push(msg[i].name);
