@@ -1,6 +1,6 @@
-<!-- 登录日志 -->
+<!-- 绿化空白路段 -->
 <template>
-  <div class="">登录日志</div>
+  <div class="">绿化空白路段</div>
 </template>
 
 <script>

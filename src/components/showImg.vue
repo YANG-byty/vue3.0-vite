@@ -29,70 +29,101 @@
 </template>
 
 <script>
-//这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
-//例如：import 《组件名称》 from '《组件路径》';
+// 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
+// 例如：import 《组件名称》 from '《组件路径》';
+import { ElMessage, ElMessageBox } from "element-plus"; //状态提示
+import { useStore } from "vuex"; //引入状态管理
+import {
+  inject,
+  watchEffect,
+  watch,
+  computed,
+  toRefs,
+  ref,
+  reactive,
+  onBeforeMount,
+  onMounted,
+  onBeforeUpdate,
+  onUpdated,
+  onBeforeUnmount,
+  onUnmounted,
+  onActivated,
+} from "vue";
 
 export default {
-  props: {
-    ulImg: Array,
-  },
-  //import引入的组件需要注入到对象中才能使用
+  // import引入的组件需要注入到对象中才能使用
   components: {},
-  data() {
-    //这里存放数据
-    return {
+  setup(props, context) {
+    const ulImg = inject("ulImg");
+    //methods方法集合
+    const methods = {
+      reduceFn() {
+        if (data.index == 0) {
+          data.index = ulImg.length - 1;
+        } else {
+          --data.index;
+        }
+      },
+      addFn() {
+        if (data.index == ulImg.length - 1) {
+          data.index = 0;
+        } else {
+          ++data.index;
+        }
+      },
+      liFn(item, index) {
+        data.showImgUrl = item.url;
+        data.index = index;
+      },
+      showImgFlagFn() {
+        data.showImgFlag = true;
+        data.showImgUrl = ulImg[0].url;
+      },
+      closeFn() {
+        data.showImgFlag = false;
+      },
+    };
+
+    //data数据定义及初始化
+    const data = reactive({
       showImgFlag: false,
       showImgUrl: "",
       index: 0,
+    });
+
+    onBeforeMount(() => {
+      // 生命周期 - 挂载之前
+    });
+    onMounted(() => {
+      // 生命周期 - 挂载完成（可以访问DOM元素）
+      data.showImgUrl = ulImg[0].url;
+    });
+    onBeforeUpdate(() => {
+      // 生命周期 - 更新之前
+    });
+    onUpdated(() => {
+      // 生命周期 - 更新之后
+    });
+    onBeforeUnmount(() => {
+      // 生命周期 - 销毁之前
+    });
+    onUnmounted(() => {
+      // 生命周期 - 销毁完成
+    });
+    onActivated(() => {
+      // 如果页面有keep-alive缓存功能，这个函数会触发
+    });
+
+    // 将数据及方法return出去才能挂载使用
+    return {
+      ...methods,
+      ...toRefs(data),
+      ulImg,
     };
   },
-  //监听属性 类似于data概念
-  computed: {},
-  //监控data中的数据变化
-  watch: {},
-  methods: {
-    reduceFn() {
-      if (this.index == 0) {
-        this.index = this.$props.ulImg.length - 1;
-      } else {
-        --this.index;
-      }
-    },
-    addFn() {
-      if (this.index == this.$props.ulImg.length - 1) {
-        this.index = 0;
-      } else {
-        ++this.index;
-      }
-    },
-    liFn(item, index) {
-      console.log(index);
-      this.showImgUrl = item.url;
-      this.index = index;
-    },
-    showImgFlagFn() {
-      this.showImgFlag = true;
-      this.showImgUrl = this.$props.ulImg[0].url;
-    },
-    closeFn() {
-      this.showImgFlag = false;
-    },
-  },
-  beforeCreate() {}, //生命周期 - 创建之前
-  created() {
-    //生命周期 - 创建完成（可以访问当前this实例）
-  },
-  beforeMount() {}, //生命周期 - 挂载之前
-  mounted() {
-    this.showImgUrl = this.$props.ulImg[0].url;
-  },
-  beforeUpdate() {}, //生命周期 - 更新之前
-  updated() {}, //生命周期 - 更新之后
-  beforeUnmount() {}, //生命周期 - 销毁之前
-  unmounted() {}, //生命周期 - 销毁完成
-  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
+
 <style lang="less" scoped>
 .modal {
   position: fixed;
@@ -106,6 +137,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
 
   .modal-dialog {
     border-radius: 1rem;

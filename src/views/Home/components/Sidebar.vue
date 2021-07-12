@@ -11,38 +11,35 @@
       unique-opened
       router
     >
-      <template v-for="item in items">
-        <template v-if="item.subs">
-          <el-submenu :index="item.index" :key="item.index">
+      <template v-for="item in buildMenuData.menuModuleList">
+        <template v-if="item.subList">
+          <el-submenu :index="item.name" :key="item.name">
             <template #title>
-              <i :class="item.icon"></i>
+              <i :class="item.icon ? item.icon : 'el-icon-reading'"></i>
               <span>{{ item.title }}</span>
             </template>
-            <template v-for="subItem in item.subs">
+            <template v-for="subItem in item.subList">
               <el-submenu
-                v-if="subItem.subs"
-                :index="subItem.index"
-                :key="subItem.index"
+                v-if="subItem.subList.length > 0"
+                :index="subItem.name"
+                :key="subItem.name"
               >
                 <template #title>{{ subItem.title }}</template>
                 <el-menu-item
-                  v-for="(threeItem, i) in subItem.subs"
+                  v-for="(threeItem, i) in subItem.subList"
                   :key="i"
-                  :index="threeItem.index"
+                  :index="threeItem.name"
                   >{{ threeItem.title }}</el-menu-item
                 >
               </el-submenu>
-              <el-menu-item
-                v-else
-                :index="subItem.index"
-                :key="subItem.index"
-                >{{ subItem.title }}</el-menu-item
-              >
+              <el-menu-item v-else :index="subItem.name" :key="subItem.name">{{
+                subItem.title
+              }}</el-menu-item>
             </template>
           </el-submenu>
         </template>
         <template v-else>
-          <el-menu-item :index="item.index" :key="item.index">
+          <el-menu-item :index="item.name" :key="item.name">
             <i :class="item.icon"></i>
             <span slot="title">{{ item.title }}</span>
           </el-menu-item>
@@ -59,189 +56,15 @@ export default {
   data() {
     return {
       collapse: false,
-      items: [
-        {
-          icon: "el-icon-s-home",
-          index: "welcome",
-          title: "welcome",
-        },
-        {
-          icon: "el-icon-s-tools",
-          index: "System",
-          title: "系统管理",
-          subs: [
-            {
-              index: "menu",
-              title: "系统菜单",
-            },
-            {
-              index: "department",
-              title: "部门管理",
-            },
-            {
-              index: "params",
-              title: "码表管理",
-            },
-          ],
-        },
-        {
-          icon: "el-icon-s-data",
-          index: "EssentialData",
-          title: "基础数据",
-          subs: [
-            {
-              index: "deviceInfo",
-              title: "设备信息",
-            },
-            {
-              index: "greenblankroad",
-              title: "绿化空白路段",
-            },
-            {
-              index: "worktype",
-              title: "施工类型",
-            },
-            {
-              index: "sructure",
-              title: "结构物",
-              subs: [
-                {
-                  index: "bridge",
-                  title: "桥梁",
-                },
-                {
-                  index: "side",
-                  title: "边坡路堤挡墙",
-                },
-                {
-                  index: "hub",
-                  title: "互通枢纽",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          icon: "el-icon-document-copy",
-          index: "DailyMaintenance",
-          title: "日常养护",
-          subs: [
-            {
-              index: "repairworkmain",
-              title: "小修",
-            },
-          ],
-        },
-        {
-          icon: "el-icon-s-cooperation",
-          index: "SpecialConserve",
-          title: "专项养护",
-          subs: [
-            {
-              index: "specialConserve",
-              title: "专项养护",
-            },
-          ],
-        },
-        {
-          icon: "el-icon-coin",
-          index: "CostBudget",
-          title: "费用预算",
-          subs: [
-            {
-              index: "costBudget",
-              title: "费用预算",
-            },
-          ],
-        },
-        {
-          icon: "el-icon-s-opportunity",
-          index: "EmergencyResponse",
-          title: "应急响应",
-          subs: [
-            {
-              index: "emergencyResponse",
-              title: "应急响应",
-            },
-          ],
-        },
-        {
-          icon: "el-icon-pie-chart",
-          index: "StatisticsExamine",
-          title: "统计查询",
-          subs: [
-            {
-              index: "statisticsExamine",
-              title: "统计查询",
-            },
-          ],
-        },
-        {
-          icon: "el-icon-s-platform",
-          index: "Construction",
-          title: "施工管理",
-          subs: [
-            {
-              index: "dayworkmain",
-              title: "台班登记",
-            },
-            {
-              index: "propact",
-              title: "工程合同",
-            },
-            {
-              index: "orderSheet",
-              title: "任务指令单",
-            },
-            {
-              index: "requestsheet",
-              title: "施工申请单",
-            },
-          ],
-        },
-        {
-          icon: "el-icon-document",
-          index: "Patrol",
-          title: "巡查管理",
-          subs: [
-            {
-              index: "carroadmain",
-              title: "统计查询",
-            },
-          ],
-        },
-        {
-          icon: "el-icon-document-checked",
-          index: "WorkExamine",
-          title: "工作考核",
-          subs: [
-            {
-              index: "circleabsence",
-              title: "考勤管理",
-            },
-          ],
-        },
-        {
-          icon: "el-icon-chat-line-round",
-          index: "DreamSend",
-          title: "短信管理",
-          subs: [
-            {
-              index: "template",
-              title: "短信模板",
-            },
-          ],
-        },
-      ],
     };
   },
   computed: {
     onRoutes() {
       return this.$route.meta.index;
     },
-    // buildMenuData() {
-    //   return this.$store.state.buildMenuData;
-    // },
+    buildMenuData() {
+      return this.$store.state.buildMenuData;
+    },
     // ...mapState(["buildMenuData"]),
   },
   created() {
@@ -258,9 +81,10 @@ export default {
 <style scoped>
 .sidebar {
   display: block;
-  height: 100vh;
+  height: calc(100vh - 70px);
   bottom: 0;
   overflow-y: scroll;
+  user-select: none;
 }
 .sidebar::-webkit-scrollbar {
   width: 0;

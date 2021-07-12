@@ -1,6 +1,6 @@
-<!-- 登录日志 -->
+<!-- 病害分类 -->
 <template>
-  <div class="">登录日志</div>
+  <div class="">病害分类</div>
 </template>
 
 <script>

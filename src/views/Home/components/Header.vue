@@ -27,10 +27,13 @@
         <!-- 用户名下拉菜单 -->
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
-            admin<i class="el-icon-arrow-down el-icon--right"></i>
+            {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
+              <el-dropdown-item divided command="settings"
+                >用户设置
+              </el-dropdown-item>
               <el-dropdown-item divided command="loginout"
                 >退出登录
               </el-dropdown-item>
@@ -39,6 +42,27 @@
         </el-dropdown>
       </div>
     </div>
+    <el-drawer
+      title="用户设置"
+      v-model="settingsFlag"
+      direction="rtl"
+      size="30%"
+      custom-class="settings-drawer"
+    >
+      <div class="settings-drawer__content">
+        <el-form>
+          <el-form-item label="活动名称">
+            <el-input autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="settings-drawer__footer">
+        <el-button @click="cancelForm">取 消</el-button>
+        <el-button @click="handleClose" type="primary" :loading="loading">{{
+          loading ? "提交中 ..." : "确 定"
+        }}</el-button>
+      </div>
+    </el-drawer>
   </div>
 </template>
 <script>
@@ -47,6 +71,8 @@ import setToken from "@/settings.js";
 export default {
   data() {
     return {
+      loading: false,
+      settingsFlag: false,
       collapse: false,
       fullscreen: false,
       name: "",
@@ -55,16 +81,38 @@ export default {
   },
   computed: {
     username() {
-      let username = JSON.parse(sessionStorage.getItem("userInfo")).account;
+      let username = JSON.parse(sessionStorage.getItem("userInfo")).userName;
       return username ? username : this.name;
     },
   },
   methods: {
+    // 设置提交
+    handleClose() {
+      if (this.loading) {
+        return;
+      }
+      this.$confirm("确定要提交表单吗？")
+        .then((_) => {
+          this.loading = true;
+          this.settingsFlag = false;
+        })
+        .catch((_) => {});
+    },
+    // 关闭抽屉
+    cancelForm() {
+      this.loading = false;
+      this.settingsFlag = false;
+    },
     // 用户名下拉菜单选择事件
     handleCommand(command) {
+      console.log(command);
       if (command == "loginout") {
-        sessionStorage.removeItem(setToken.token);
-        this.$router.push("/login");
+        this.$store.dispatch("actLogout").then(() => {
+          sessionStorage.removeItem(setToken.token);
+          this.$router.push("/login");
+        });
+      } else if (command == "settings") {
+        this.settingsFlag = true;
       }
     },
     // 侧边栏折叠
@@ -112,7 +160,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style lang="less" scoped>
 .header {
   /* position: relative; */
   box-sizing: border-box;
@@ -120,6 +168,19 @@ export default {
   height: 70px;
   font-size: 22px;
   color: #fff;
+  user-select: none;
+  .settings-drawer__content {
+    padding: 1rem;
+  }
+  .settings-drawer {
+    position: relative;
+    .settings-drawer__footer {
+      position: absolute;
+      left: 2rem;
+      bottom: 2rem;
+      text-align: center;
+    }
+  }
 }
 .collapse-btn {
   float: left;

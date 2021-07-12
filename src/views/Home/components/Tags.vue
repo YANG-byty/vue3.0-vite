@@ -17,7 +17,7 @@
     </ul>
     <div class="tags-close-box">
       <el-dropdown class="user-name" @command="handleTags">
-        <el-button size="mini" type="primary">
+        <el-button size="mini" type="primary" style="height: 32px">
           标签选项<i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <template #dropdown>
@@ -70,17 +70,19 @@ export default {
     },
     // 设置标签
     setTags(route) {
+      let clientWidth = document.body.clientWidth;
+      let num = Math.floor((clientWidth - 350) / 90) - 2;
+      // console.log(route);
       const isExist = this.tagsList.some((item) => {
         return item.path === route.fullPath;
       });
       if (!isExist) {
-        // if (this.tagsList.length >= 10) {
-        //   this.tagsList.shift();
-        // }
-        this.tagsList.unshift({
+        if (this.tagsList.length > num) {
+          this.tagsList.pop();
+        }
+        this.tagsList.push({
           title: route.meta.title,
           path: route.fullPath,
-          name: route.matched[0].components.default.name,
         });
       }
       bus.emit("tags", this.tagsList);
@@ -131,6 +133,7 @@ export default {
   padding-right: 120px;
   box-shadow: 0 5px 10px #ddd;
   margin-bottom: 10px;
+  user-select: none;
 }
 
 .tags ul {
@@ -188,7 +191,7 @@ export default {
   padding-top: 1px;
   text-align: center;
   width: 110px;
-  height: 30px;
+  height: 34px;
   background: #fff;
   box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
   z-index: 10;

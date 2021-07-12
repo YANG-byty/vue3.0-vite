@@ -1,6 +1,6 @@
-<!-- 登录日志 -->
+<!-- 设备信息 -->
 <template>
-  <div class="">登录日志</div>
+  <div class="">设备信息</div>
 </template>
 
 <script>

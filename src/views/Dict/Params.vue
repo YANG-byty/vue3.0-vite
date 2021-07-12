@@ -1,6 +1,6 @@
-<!-- 登录日志 -->
+<!--码表管理-->
 <template>
-  <div class="">登录日志</div>
+  <div class="">码表管理</div>
 </template>
 
 <script>

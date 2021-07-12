@@ -36,8 +36,6 @@ export default {
   },
   methods: {},
   created() {
-    this.$store.dispatch("actGetBuildMenu");
-
     bus.on("collapse-content", (msg) => {
       this.collapse = msg;
     });

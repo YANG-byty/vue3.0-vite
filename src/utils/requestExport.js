@@ -29,17 +29,16 @@ request.interceptors.request.use((config) => {
 request.interceptors.response.use(
     response => {
         if (response.status === 200) {
-            if (!response.data.success) {
-                ElMessage.error(response.data.message);
-                if (response.data.code.includes("Jwt")) {
-                    router.push('/login')
-                    sessionStorage.removeItem('userInfo') // 注释401
-                }
-            } else {
-                if (response.data.token) {
-                    sessionStorage.setItem(setToken.token, response.data.token);
-                }
-            }
+            const link = document.createElement('a');
+            let blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            link.style.display = 'none';
+            let url = window.URL.createObjectURL(blob);
+            link.href = url;
+            link.download = decodeURI(response.headers['content-disposition']); //下载后文件名
+            document.body.appendChild(link);
+            link.click();
+            window.URL.revokeObjectURL(url); // 释放这个临时的对象url
+            document.body.removeChild(link);
 
             return response.data
         } else {
@@ -48,9 +47,6 @@ request.interceptors.response.use(
     },
     error => {
         console.log(error)
-        if (!error.response) {
-            return
-        }
         switch (error.response.status) {
             case 401:
                 ElMessage.error('身份信息过期,请重新登录') // 放开401

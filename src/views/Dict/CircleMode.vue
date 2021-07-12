@@ -1,6 +1,6 @@
-<!-- 登录日志 -->
+<!-- 周期任务类型 -->
 <template>
-  <div class="">登录日志</div>
+  <div class="">周期任务类型</div>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
-<!-- 登录日志 -->
+<!-- 系统设置 -->
 <template>
-  <div class="">登录日志</div>
+  <div class="">系统设置</div>
 </template>
 
 <script>

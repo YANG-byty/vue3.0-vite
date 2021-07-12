@@ -4,7 +4,7 @@
 
 <script>
 import "@/assets/css/components.css";
-import "@/assets/css/main.css";
+import "@/assets/css/main.less";
 import "@/assets/css/color-dark.css";
 export default {
   name: "App",

@@ -41,7 +41,9 @@
               <span @click="passwordFn">忘记密码?</span>
             </div>
             <div class="login-btn">
-              <el-button type="primary" @click="submitForm()">登录</el-button>
+              <el-button type="primary" :icon="icon" @click="submitForm()"
+                >登录</el-button
+              >
             </div>
             <div style="color: #b5b5b5">
               杭州路灵信息技术有限公司 Copyright©2019
@@ -61,6 +63,7 @@ export default {
   name: "login",
   data: function () {
     return {
+      icon: "",
       param: {
         username: "",
         password: "",
@@ -82,18 +85,16 @@ export default {
             userName: this.param.username,
             password: md5(this.param.password).toUpperCase(),
           };
+          this.icon = "el-icon-loading";
           systemInfo.login(obj).then((res) => {
             if (res.success) {
               systemInfo.getPermission().then((res2) => {
-                if (res.success) {
+                if (res2.success) {
                   sessionStorage.setItem("userInfo", JSON.stringify(res2.data));
+                  that.icon = "";
                   this.$router.push("/");
-                } else {
-                  ElMessage.success(res2.message);
                 }
               });
-            } else {
-              ElMessage.error(res.message);
             }
           });
         } else {
@@ -113,6 +114,8 @@ export default {
         },
       });
     },
+  },
+  mounted() {
   },
 };
 </script>

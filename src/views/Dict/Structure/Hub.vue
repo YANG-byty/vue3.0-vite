@@ -1,6 +1,6 @@
-<!-- 登录日志 -->
+<!-- 互通枢纽 -->
 <template>
-  <div class="">登录日志</div>
+  <div class="">互通枢纽</div>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
-<!-- 登录日志 -->
+<!-- 养护地图 -->
 <template>
-  <div class="">登录日志</div>
+  <div class="">养护地图</div>
 </template>
 
 <script>

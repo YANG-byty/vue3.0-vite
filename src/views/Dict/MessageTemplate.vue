@@ -1,6 +1,6 @@
-<!-- 登录日志 -->
+<!-- 消息模板 -->
 <template>
-  <div class="">登录日志</div>
+  <div class="">消息模板</div>
 </template>
 
 <script>
@@ -61,4 +61,4 @@ export default {
   },
 };
 </script>
-<style lang="less" scoped></style>
+<style></style>
