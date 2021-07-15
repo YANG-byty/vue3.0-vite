@@ -2,12 +2,11 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import "@/assets/font/iconfont.css"
 import ElementPlus from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 import locale from 'element-plus/lib/locale/lang/zh-cn.js'
 import vuex from 'vuex'
-import "@/assets/font/iconfont.css";
-
 
 const app = createApp(App);
 app.use(store);
@@ -22,13 +21,17 @@ app.mount('#app');
 const reSetPermissionList = to => {
     return new Promise((resolve, reject) => {
         if (to.path !== '/login' && store.state.buildMenuData.menuRouteList.length === 0) {
-            store.dispatch('actGetBuildMenu').then(() => {
+            store.dispatch('actGetBuildMenu').then((res) => {
+                console.log(res);
+                if (res.code.includes("Jwt")) { //防止token过期进入死循环
+                    resolve()
+                } else {
                     resolve('permCode')
-                })
-                .catch(error => {
-                    console.log(error);
-                    resolve('permCode')
-                })
+                }
+            }).catch(error => { //防止token过期进入死循环
+                console.log(error);
+                resolve()
+            })
         } else {
             resolve()
         }
