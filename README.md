@@ -79,7 +79,7 @@ export default {
     //ref、reactive用来定义响应式数据：
     //ref：主要用于基本类型的响应,也可以是引用数据类型。ref如果要修改他的值话只能使用.value进行修改
     const text = ref(0) || ref({ a: 1, b: 2 });
-    //reactive：主要用于引用类型的响应。如果使用reactive必须使用toRefs()转成简单数据类型才能使用
+    //reactive：主要用于引用类型的响应。如果使用reactive必须使用toRefs()进行结构，转成简单数据类型才能使用
     const text = reactive({ a: 1, b: 2 });
 
     const store = useStore(); //使用vuex仓库
